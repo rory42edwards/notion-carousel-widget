@@ -1,3 +1,6 @@
+// Import Firebase modules
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-storage.js";
 // Firebase setup
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
@@ -9,29 +12,47 @@ const firebaseConfig = {
   appId: "1:508992754049:web:4344e425b9fbb638635880",
   measurementId: "G-YK3QK31SH1"
 };
-firebase.initializeApp(firebaseConfig);
-const storage = firebase.storage();
+const app = initializeApp(firebaseConfig);
+const storage = getStorage(app);
 
 let images = [];
 let index = 0;
 
+// Function to display images in the carousel
+function updateCarousel() {
+    if (images.length > 0) {
+        document.getElementById("image").src = images[index];
+    }
+}
+
+// Handle file upload
 document.getElementById("uploadBtn").addEventListener("click", async () => {
-    const files = document.getElementById("fileInput").files;
+    const fileInput = document.getElementById("fileInput");
+    const files = fileInput.files;
+
     for (let file of files) {
-        const ref = storage.ref().child(`uploads/${file.name}`);
-        await ref.put(file);
-        const url = await ref.getDownloadURL();
+        const fileRef = ref(storage, `uploads/${file.name}`);
+        await uploadBytes(fileRef, file);
+        const url = await getDownloadURL(fileRef);
         images.push(url);
     }
-    document.getElementById("image").src = images[0];
+
+    // Show the first image after upload
+    updateCarousel();
 });
 
+// Next & Previous buttons for carousel
 document.getElementById("next").addEventListener("click", () => {
-    index = (index + 1) % images.length;
-    document.getElementById("image").src = images[index];
+    if (images.length > 0) {
+        index = (index + 1) % images.length;
+        updateCarousel();
+    }
 });
 
 document.getElementById("prev").addEventListener("click", () => {
-    index = (index - 1 + images.length) % images.length;
-    document.getElementById("image").src = images[index];
+    if (images.length > 0) {
+        index = (index - 1 + images.length) % images.length;
+        updateCarousel();
+    }
 });
+
