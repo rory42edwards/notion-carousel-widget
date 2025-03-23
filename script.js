@@ -1,11 +1,13 @@
 // Firebase setup
-const firebaseConfig = { 
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-    projectId: "YOUR_PROJECT_ID",
-    storageBucket: "YOUR_PROJECT_ID.appspot.com",
-    messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-    appId: "YOUR_APP_ID"
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyDpLzSMn1vLaBXj1Fgl2a27Kgn8R9blh7c",
+  authDomain: "notion-carousel-widget.firebaseapp.com",
+  projectId: "notion-carousel-widget",
+  storageBucket: "notion-carousel-widget.firebasestorage.app",
+  messagingSenderId: "508992754049",
+  appId: "1:508992754049:web:4344e425b9fbb638635880",
+  measurementId: "G-YK3QK31SH1"
 };
 firebase.initializeApp(firebaseConfig);
 const storage = firebase.storage();
